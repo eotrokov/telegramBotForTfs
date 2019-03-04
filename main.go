@@ -2,21 +2,14 @@ package main
 
 import (
 	. "./config"
-	. "./tfsClient"
+	. "./tfs/tfsClient"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/tkanos/gonfig"
 	"log"
 	"time"
-)
-var numericKeyboard = tgbotapi.NewReplyKeyboard(
-	tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("time"),
-	),
 )
 
 func main() {
 	configuration := GetConfig()
-	err := gonfig.GetConf("./config.json", &configuration)
 	bot, err := tgbotapi.NewBotAPI(configuration.BotToken)
 	if err != nil {
 		log.Panic(err)
@@ -31,7 +24,7 @@ func main() {
 	time.Sleep(time.Millisecond * 500)
 	updates.Clear()
 	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
+		if update.Message == nil {
 			continue
 		}
 
@@ -45,11 +38,10 @@ func main() {
 			default:
 				msg.Text = "I don't know that command"
 			}
-			bot.Send(msg)
+			_, sendErr := bot.Send(msg)
+			if sendErr != nil {
+				log.Panic(sendErr)
+			}
 		}
-		//if update.Message.Text == "time" {
-		//	msg := tgbotapi.NewMessage(update.Message.Chat.ID, GetInterationWorks())
-		//	bot.Send(msg)
-		//}
 	}
 }

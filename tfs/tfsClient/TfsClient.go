@@ -1,7 +1,7 @@
 package tfsClient
 
 import (
-	"../config"
+	"../../config"
 	. "../model"
 	. "../requests"
 	"encoding/base64"

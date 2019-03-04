@@ -2,7 +2,7 @@ package requests
 
 import (
 	. "../model"
-	. "../requestHelper"
+	. "../../requestHelper"
 	. "../responses"
 	"fmt"
 	"github.com/ahmetb/go-linq"
